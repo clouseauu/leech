@@ -10,7 +10,9 @@ defmodule Leech.Scraper.PropertyList do
   end
 
   def fetch(property_list, url_list) do
-    GenServer.cast(property_list, { :fetch, url_list })
+    url_list |> Enum.each(fn(url) ->
+      GenServer.cast(property_list, { :fetch, url })
+    end)
   end
 
   def init(_) do
@@ -21,10 +23,9 @@ defmodule Leech.Scraper.PropertyList do
     { :reply, list, list }
   end
 
-  def handle_cast({ :fetch, url_list }, state) do
-    list = url_list
-    |> List.first
-    |> Leech.Scraper.ResultsPage.property_ids
+  def handle_cast({ :fetch, url }, state) do
+    IO.inspect "fetching #{url}"
+    list = url |> Leech.Scraper.ResultsPage.property_ids
 
     { :noreply, state ++ list }
   end
