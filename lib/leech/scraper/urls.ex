@@ -23,8 +23,8 @@ defmodule Leech.Scraper.Urls do
       "/",
       options[:type] |> property_type,
       options[:min_bedrooms] |> min_bedrooms,
-      price(options),
-      suburb(suburb),
+      options |> price,
+      suburb |> suburb,
       "/list-1",
       "?",
       options[:max_bedrooms] |> max_bedrooms
